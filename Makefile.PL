@@ -1,4 +1,3 @@
-#! /usr/local/bin/perl
 
 use ExtUtils::MakeMaker;
 
@@ -8,6 +7,9 @@ WriteMakefile(
 	'NAME' => 'Callback',
 	'DISTNAME' => 'Callback',
 	'VERSION_FROM' => 'Callback.pm',
+	($] >= 5.005 ?
+	    ('ABSTRACT' => 'Create function callback objects',
+	     'AUTHOR'	=> 'David Muir Sharnoff <muir@idiom.com>') : ()),
 	'dist'   => {COMPRESS=>'gzip', SUFFIX=>'gz'}
 );
 

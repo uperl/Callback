@@ -2,5 +2,6 @@ Callback.pm
 Callback.pod
 Makefile.PL
 MANIFEST
+CHANGELOG
 README
 t/callback.t

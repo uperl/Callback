@@ -5,22 +5,27 @@ SYNOPSIS
             use Callback;
 
             my $callback = new Callback (\&myfunc, @myargs);
+            my $callback = new Callback ($myobj, $mymethod, @myargs);
 
             $callback->call(@some_more_args);
 
 DESCRIPTION
-        
-Callback provides a simple interface for function callbacks.  It 
-would be possible to provide nearly all of the functionality using
-inline code references.  Callback was written before 
-inline code references were added to perl.
+    Callback provides a simple interface for function callbacks. It would be
+    possible to provide nearly all of the functionality using inline code
+    references. Callback was written before inline code references were
+    added to perl.
+
     What callback does provide is a simple interface for common situation:
     passing around a function.
 
     When a callback is constructed, a base set of arguments can be provided.
     These function arguments will preceed any arguments added at the time
-    the call is made. When the function to be called is a reference, be sure
-    to put $this as the first argument!
+    the call is made.
+
+    There are two forms for the callback constructor, depending on whether
+    the call is a pure functional call or a method call. The rule is that if
+    the first argument is an object, then the second argument is a method
+    name to be called on that object.
 
 TRACING
             use Callback qw(@callbackTrace);
@@ -42,7 +47,7 @@ TRACING
     Without such code, it becomes very hard to know what's going on.
 
 COPYRIGHT
-    Copyright (C) 1994, 1998, David Muir Sharnoff. All rights reserved.
+    Copyright (C) 1994, 2000, David Muir Sharnoff. All rights reserved.
     License hearby granted for anyone to use this module at their own risk.
     Please feed useful changes back to muir@idiom.com.
 
