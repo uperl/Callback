@@ -1,4 +1,12 @@
 
++ 2001/03/29 vers 1.02
+
+Changes from Raphael Manfredi <Raphael_Manfredi@pobox.com> to
+add serialize method callbacks using Storable.
+
+In addition Callback now dies if a method for a method callback
+does not exist at the time of creation.
+
 + 2000/08/22 vers 1.02
 
 Changes from Raphael Manfredi <Raphael.Manfredi@st.com> to 

@@ -21,7 +21,7 @@ sub postamble {
 pm_to_blib: README
 
 README: Callback.pod
-\tpod2text Callback.pod >README
+\tCOLUMNS=80 pod2text Callback.pod >README
 
 END_OF_POSTAMBLE
 }

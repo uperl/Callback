@@ -5,3 +5,5 @@ MANIFEST
 CHANGELOG
 README
 t/callback.t
+t/error.t
+t/store.t
