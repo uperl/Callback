@@ -1,7 +1,7 @@
 
 use Callback;
 
-eval "require Storable qw(1.0); require 5.6";
+eval "require Storable";
 if ($@) {
 	print "1..0\n";
 	exit 0;

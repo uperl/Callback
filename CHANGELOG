@@ -1,5 +1,12 @@
 
-+ 2001/03/29 vers 1.02
++ 2002/11/20 vers 1.04
+
+Can now create callback objects from callback objects.
+
+Fix t/store.t -- it appears that the old require syntax for
+specific versions no longer works.
+
++ 2001/03/29 vers 1.02 & 1.03
 
 Changes from Raphael Manfredi <Raphael_Manfredi@pobox.com> to
 add serialize method callbacks using Storable.

@@ -6,6 +6,7 @@ SYNOPSIS
 
             my $callback = new Callback (\&myfunc, @myargs);
             my $callback = new Callback ($myobj, $mymethod, @myargs);
+            my $callback = new Callback ($old_callback, @myargs);
 
             $callback->call(@some_more_args);
 
@@ -26,8 +27,11 @@ DESCRIPTION
     found.
 
     Callback objects built for object-oriented calls also have the property
-    of being serializable via Storable. Purely functional callabacks are not
-    serializable because CODE references are not supported by Storable.
+    of being serializable via Storable. Purely functional callabacks cannot
+    be serialized because CODE references are not supported by Storable.
+
+    Callback objects can be created from existing Callback objects. Any
+    arguments will be appended onto the original list of arguments.
 
 TRACING
             use Callback qw(@callbackTrace);
@@ -49,7 +53,7 @@ TRACING
     Without such code, it becomes very hard to know what's going on.
 
 COPYRIGHT
-    Copyright (C) 1994, 2000, David Muir Sharnoff. All rights reserved.
+    Copyright (C) 1994, 2000, 2002 David Muir Sharnoff. All rights reserved.
     License hearby granted for anyone to use this module at their own risk.
     Please feed useful changes back to muir@idiom.com.
 

@@ -6,4 +6,5 @@ CHANGELOG
 README
 t/callback.t
 t/error.t
+t/obj.t
 t/store.t

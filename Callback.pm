@@ -4,7 +4,7 @@ package Callback;
 require Exporter;
 require UNIVERSAL;
 
-$VERSION = $VERSION = 1.03;
+$VERSION = $VERSION = 1.04;
 @ISA = (Exporter);
 @EXPORT_OK = qw(@callbackTrace);
 
@@ -16,15 +16,22 @@ sub new
 	my ($p, $file, $line) = caller(0);
 	my @method;
 	if (ref $func ne 'CODE' && UNIVERSAL::isa($func, "UNIVERSAL")) {
-		my $method = shift @args;
-		my $obj = $func;
-		$func = $obj->can($method);
-		unless (defined $func) {
-			require Carp;
-			Carp::croak("Can't locate method '$method' for object $obj");
+		if ($func->isa('Callback')) {
+			return $func unless @args;
+			my $new = bless { %$func }, $package;
+			push(@{$new->{ARGS}}, @args);
+			return $new;
+		} else {
+			my $method = shift @args;
+			my $obj = $func;
+			$func = $obj->can($method);
+			unless (defined $func) {
+				require Carp;
+				Carp::croak("Can't locate method '$method' for object $obj");
+			}
+			unshift(@args, $obj);
+			@method = (METHOD => $method);	# For Storable hooks
 		}
-		unshift(@args, $obj);
-		@method = (METHOD => $method);	# For Storable hooks
 	}
 	my $x = {
 		FUNC   => $func,
