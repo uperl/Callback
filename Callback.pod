@@ -1,0 +1,52 @@
+=head1 NAME
+
+Callback - object interface for function callbacks
+
+=head1 SYNOPSIS
+
+	use Callback;
+
+	my $callback = new Callback (\&myfunc, @myargs);
+
+	$callback->call(@some_more_args);
+
+=head1 DESCRIPTION
+	
+Callback provides a simple interface for function callbacks.  It 
+would be possible to provide nearly all of the functionality using
+inline code references.  Callback was written before 
+inline code references were added to perl.
+
+What callback does provide is a simple interface for common situation:
+passing around a function.
+
+When a callback is constructed, a base set of arguments can be 
+provided.  These function arguments will preceed any arguments added
+at the time the call is made.  When the function to be called is a
+reference, be sure to put B<$this> as the first argument!
+
+=head1 TRACING
+
+	use Callback qw(@callbackTrace);
+
+If you're writing a debugging routine that provides a stack-dump
+(for example, Carp::confess) it is useful to know where a callback
+was registered.  
+
+	my $ct = 0;
+	while (($package, $file, $line, $subname, $hasargs, $wantarray) = caller($i++)) {
+	    ...
+
+	    if ($subname eq 'Callback::call') {
+		print "callback registered $Callback::callbackTrace[$ct]\n";
+		$ct++;
+	    }
+	}
+
+Without such code, it becomes very hard to know what's going on.
+
+=head1 COPYRIGHT
+
+Copyright (C) 1994, 1998, David Muir Sharnoff.   All rights reserved.
+License hearby granted for anyone to use this module at their own risk.   
+Please feed useful changes back to muir@idiom.com.
