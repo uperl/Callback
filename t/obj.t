@@ -30,8 +30,8 @@ sub print {
 package main;
 
 my $obj = TEST->make;
-my $c = new Callback ($obj, 'print');
-$c->call(1);
+my $c5 = new Callback ($obj, 'print');
+$c5->call(1);
 
 my $c2 = new Callback ($obj, 'print', 2);
 $c2->call;

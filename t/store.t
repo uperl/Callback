@@ -3,8 +3,13 @@ use Callback;
 
 eval "require Storable";
 if ($@) {
-	print "1..0\n";
+	print "1..0 # Skipped: Storable not installed\n";
 	exit 0;
+}
+unless ($Storable::VERSION >= 2.04) {
+	print "1..0 # Skipped: Storable >= 2.04 required\n";
+	exit 0;
+	my $x = $Storable::VERSION; # used again
 }
 
 print "1..5\n";
