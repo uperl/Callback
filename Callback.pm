@@ -4,7 +4,7 @@ package Callback;
 require Exporter;
 require UNIVERSAL;
 
-$VERSION = $VERSION = 1.05;
+$VERSION = $VERSION = 1.06;
 @ISA = (Exporter);
 @EXPORT_OK = qw(@callbackTrace);
 
@@ -98,6 +98,7 @@ sub STORABLE_thaw {
 		unless defined $func;
 
 	$self->{FUNC} = $func;
+	return;
 }
 
 1;
