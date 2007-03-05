@@ -54,8 +54,7 @@ TRACING
 
 COPYRIGHT
     Copyright (C) 1994, 2000, 2002 David Muir Sharnoff. All rights reserved.
-    License hearby granted for anyone to use this module at their own risk.
-    Please feed useful changes back to muir@idiom.com.
+    This module may be licensed on the same terms as Perl itself.
 
 AUTHORS
     David Muir Sharnoff <muir@idiom.com> and Raphael Manfredi

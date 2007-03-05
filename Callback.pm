@@ -4,7 +4,7 @@ package Callback;
 require Exporter;
 require UNIVERSAL;
 
-$VERSION = $VERSION = 1.06;
+$VERSION = $VERSION = 1.07;
 @ISA = (Exporter);
 @EXPORT_OK = qw(@callbackTrace);
 
