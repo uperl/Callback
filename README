@@ -2,13 +2,13 @@ NAME
     Callback - object interface for function callbacks
 
 SYNOPSIS
-            use Callback;
+     use Callback;
+ 
+     my $callback = new Callback (\&myfunc, @myargs);
+     my $callback = new Callback ($myobj, $mymethod, @myargs);
+     my $callback = new Callback ($old_callback, @myargs);
 
-            my $callback = new Callback (\&myfunc, @myargs);
-            my $callback = new Callback ($myobj, $mymethod, @myargs);
-            my $callback = new Callback ($old_callback, @myargs);
-
-            $callback->call(@some_more_args);
+     $callback->call(@some_more_args);
 
 DESCRIPTION
     Callback provides a standard interface to register callbacks. Those
@@ -34,21 +34,21 @@ DESCRIPTION
     arguments will be appended onto the original list of arguments.
 
 TRACING
-            use Callback qw(@callbackTrace);
+     use Callback qw(@callbackTrace);
 
     If you're writing a debugging routine that provides a stack-dump (for
     example, Carp::confess) it is useful to know where a callback was
     registered.
 
-            my $ct = 0;
-            while (($package, $file, $line, $subname, $hasargs, $wantarray) = caller($i++)) {
-                ...
+     my $ct = 0;
+       while (($package, $file, $line, $subname, $hasargs, $wantarray) = caller($i++)) {
+         ...
 
-                if ($subname eq 'Callback::call') {
-                    print "callback registered $Callback::callbackTrace[$ct]\n";
-                    $ct++;
-                }
-            }
+         if ($subname eq 'Callback::call') {
+           print "callback registered $Callback::callbackTrace[$ct]\n";
+           $ct++;
+         }
+     }
 
     Without such code, it becomes very hard to know what's going on.
 
@@ -61,5 +61,5 @@ AUTHORS
     <Raphael_Manfredi@pobox.com>
 
 SEE ALSO
-    Storable(3).
+    Storable
 
