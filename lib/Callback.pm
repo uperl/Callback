@@ -1,4 +1,3 @@
-
 package Callback;
 
 use strict;
@@ -109,9 +108,9 @@ Callback - object interface for function callbacks
 
  use Callback;
  
- my $callback = new Callback (\&myfunc, @myargs);
- my $callback = new Callback ($myobj, $mymethod, @myargs);
- my $callback = new Callback ($old_callback, @myargs);
+ my $callback = Callback->new(\&myfunc, @myargs);
+ my $callback = Callback->new($myobj, $mymethod, @myargs);
+ my $callback = Callback->new($old_callback, @myargs);
 
  $callback->call(@some_more_args);
 
