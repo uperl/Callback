@@ -6,56 +6,55 @@ use warnings;
 use base qw( Exporter );
 
 our $VERSION = $VERSION = 1.07;
-our @ISA = qw( Exporter );
 our @EXPORT_OK = qw(@callbackTrace);
 
 sub new
 {
-	my ($package,$func,@args) = @_;
-	my ($p, $file, $line) = caller(0);
-	my @method;
-	if (ref $func ne 'CODE' && UNIVERSAL::isa($func, "UNIVERSAL")) {
-		if ($func->isa('Callback')) {
-			return $func unless @args;
-			my $new = bless { %$func }, $package;
-			push(@{$new->{ARGS}}, @args);
-			return $new;
-		} else {
-			my $method = shift @args;
-			my $obj = $func;
-			$func = $obj->can($method);
-			unless (defined $func) {
-				require Carp;
-				Carp::croak("Can't locate method '$method' for object $obj");
-			}
-			unshift(@args, $obj);
-			@method = (METHOD => $method);	# For Storable hooks
-		}
-	}
-	my $x = {
-		FUNC   => $func,
-		ARGS   => [@args],
-		CALLER => "$file:$line",
-		@method
-	};
-	return bless $x, $package;
+  my ($package,$func,@args) = @_;
+  my ($p, $file, $line) = caller(0);
+  my @method;
+  if (ref $func ne 'CODE' && UNIVERSAL::isa($func, "UNIVERSAL")) {
+    if ($func->isa('Callback')) {
+      return $func unless @args;
+      my $new = bless { %$func }, $package;
+      push(@{$new->{ARGS}}, @args);
+      return $new;
+    } else {
+      my $method = shift @args;
+      my $obj = $func;
+      $func = $obj->can($method);
+      unless (defined $func) {
+        require Carp;
+        Carp::croak("Can't locate method '$method' for object $obj");
+      }
+      unshift(@args, $obj);
+      @method = (METHOD => $method);  # For Storable hooks
+    }
+  }
+  my $x = {
+    FUNC   => $func,
+    ARGS   => [@args],
+    CALLER => "$file:$line",
+    @method
+  };
+  return bless $x, $package;
 }
 
 sub call
 {
-	my ($this, @args) = @_;
-	my ($ret, @ret);
+  my ($this, @args) = @_;
+  my ($ret, @ret);
 
-	unshift(@Callback::callbackTrace, $this->{CALLER});
-	if (wantarray) {
-		@ret = eval {&{$this->{FUNC}}(@{$this->{ARGS}},@args)};
-	} else {
-		$ret = eval {&{$this->{FUNC}}(@{$this->{ARGS}},@args)};
-	}
-	shift(@Callback::callbackTrace);
-	die $@ if $@;
-	return @ret if wantarray;
-	return $ret;
+  unshift(@Callback::callbackTrace, $this->{CALLER});
+  if (wantarray) {  ## no critic (Policy::Community::Wantarray)
+    @ret = eval {&{$this->{FUNC}}(@{$this->{ARGS}},@args)};
+  } else {
+    $ret = eval {&{$this->{FUNC}}(@{$this->{ARGS}},@args)};
+  }
+  shift(@Callback::callbackTrace);
+  die $@ if $@;
+  return @ret if wantarray;  ## no critic (Policy::Community::Wantarray)
+  return $ret;
 }
 
 sub DELETE
@@ -74,30 +73,30 @@ sub DELETE
 #
 
 sub STORABLE_freeze {
-	my ($self, $cloning) = @_;
-	return if $cloning;
+  my ($self, $cloning) = @_;
+  return if $cloning;
 
-	my %copy = %$self;
-	die "cannot store $self since it contains CODE references\n"
-		unless exists $copy{METHOD};
+  my %copy = %$self;
+  die "cannot store $self since it contains CODE references\n"
+    unless exists $copy{METHOD};
 
-	delete $copy{FUNC};
-	return ("", \%copy);
+  delete $copy{FUNC};
+  return ("", \%copy);
 }
 
 sub STORABLE_thaw {
-	my ($self, $cloning, $x, $copy) = @_;
+  my ($self, $cloning, $x, $copy) = @_;
 
-	%$self = %$copy;
+  %$self = %$copy;
 
-	my $method = $self->{METHOD};
-	my $obj = $self->{ARGS}->[0];
-	my $func = $obj->can($method);
-	die("cannot restore $self: can't locate method '$method' on object $obj")
-		unless defined $func;
+  my $method = $self->{METHOD};
+  my $obj = $self->{ARGS}->[0];
+  my $func = $obj->can($method);
+  die("cannot restore $self: can't locate method '$method' on object $obj")
+    unless defined $func;
 
-	$self->{FUNC} = $func;
-	return;
+  $self->{FUNC} = $func;
+  return;
 }
 
 1;
@@ -108,13 +107,13 @@ Callback - object interface for function callbacks
 
 =head1 SYNOPSIS
 
-	use Callback;
+ use Callback;
+ 
+ my $callback = new Callback (\&myfunc, @myargs);
+ my $callback = new Callback ($myobj, $mymethod, @myargs);
+ my $callback = new Callback ($old_callback, @myargs);
 
-	my $callback = new Callback (\&myfunc, @myargs);
-	my $callback = new Callback ($myobj, $mymethod, @myargs);
-	my $callback = new Callback ($old_callback, @myargs);
-
-	$callback->call(@some_more_args);
+ $callback->call(@some_more_args);
 
 =head1 DESCRIPTION
 
@@ -141,21 +140,21 @@ arguments will be appended onto the original list of arguments.
 
 =head1 TRACING
 
-	use Callback qw(@callbackTrace);
+ use Callback qw(@callbackTrace);
 
 If you're writing a debugging routine that provides a stack-dump
 (for example, Carp::confess) it is useful to know where a callback
 was registered.  
 
-	my $ct = 0;
-	while (($package, $file, $line, $subname, $hasargs, $wantarray) = caller($i++)) {
-	    ...
+ my $ct = 0;
+   while (($package, $file, $line, $subname, $hasargs, $wantarray) = caller($i++)) {
+     ...
 
-	    if ($subname eq 'Callback::call') {
-		print "callback registered $Callback::callbackTrace[$ct]\n";
-		$ct++;
-	    }
-	}
+     if ($subname eq 'Callback::call') {
+       print "callback registered $Callback::callbackTrace[$ct]\n";
+       $ct++;
+     }
+ }
 
 Without such code, it becomes very hard to know what's going on.
 
@@ -172,6 +171,10 @@ Raphael Manfredi F<E<lt>Raphael_Manfredi@pobox.comE<gt>>
 
 =head1 SEE ALSO
 
-Storable(3).
+=over 4
+
+=item L<Storable>
+
+=back
 
 =cut

@@ -9,22 +9,22 @@ package TEST;
 sub make { bless {}, shift }
 
 sub pr6 {
-	my $self = shift;
-	my ($d) = @_;
-	print "ok $d\n";
+  my $self = shift;
+  my ($d) = @_;
+  print "ok $d\n";
 }
 
 package main;
 
-my $c0 = new Callback (\&pr0);
-my $c1 = new Callback (\&pr1, 2);
-my $c2 = new Callback (\&pr1, 3);
-my $c3 = new Callback (\&pr1);
-my $c4 = new Callback (\&pr2, 1);
+my $c0 = Callback->new(\&pr0);
+my $c1 = Callback->new(\&pr1, 2);
+my $c2 = Callback->new(\&pr1, 3);
+my $c3 = Callback->new(\&pr1);
+my $c4 = Callback->new(\&pr2, 1);
 
 my $obj = TEST->make;
-my $c5 = new Callback ($obj, 'pr6', 6);
-my $c6 = new Callback ($obj, 'pr6');
+my $c5 = Callback->new($obj, 'pr6', 6);
+my $c6 = Callback->new($obj, 'pr6');
 
 $c0->call();
 $c1->call();
@@ -34,21 +34,21 @@ $c4->call(4);
 $c5->call();
 $c6->call(7);
 
-sub pr0 
+sub pr0
 {
-	print "ok 1\n";
+  print "ok 1\n";
 }
 
 sub pr1
 {
-	my ($a) = @_;
-	print "ok $a\n";
+  my ($arg) = @_;
+  print "ok $arg\n";
 }
 
 sub pr2
 {
-	my ($a, $b) = @_;
-	my $s = $a + $b;
-	print "ok $s\n";
+  my ($arg1, $arg2) = @_;
+  my $s = $arg1 + $arg2;
+  print "ok $s\n";
 }
 
